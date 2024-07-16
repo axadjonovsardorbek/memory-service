@@ -2,7 +2,7 @@ DO $$
 BEGIN 
     IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'privacy_type') THEN
         CREATE TYPE privacy_type AS ENUM(
-            'friends-only', 
+            'friends_only', 
             'nobody', 
             'all'
         );
@@ -14,6 +14,13 @@ BEGIN
             'music'
         );
     END IF; 
+    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'theme_type') THEN
+        CREATE TYPE theme_type AS ENUM (
+            'dark', 
+            'light', 
+            'system'
+        );
+    END IF; 
 END $$;
 
 CREATE TABLE IF NOT EXISTS users (
@@ -23,6 +30,10 @@ CREATE TABLE IF NOT EXISTS users (
     password_hash VARCHAR(255) NOT NULL,
     full_name VARCHAR(100),
     date_of_birth DATE,
+    privacy_level privacy_type DEFAULT 'friends_only',
+    notifications_enabled BOOLEAN DEFAULT false,
+    language VARCHAR(8) DEFAULT 'en',
+    theme theme_type DEFAULT 'system',
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     deleted_at BIGINT DEFAULT 0
@@ -58,6 +69,17 @@ CREATE TABLE IF NOT EXISTS comments (
     memory_id UUID REFERENCES memories(id),
     user_id UUID REFERENCES users(id),
     content TEXT NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    deleted_at BIGINT DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS shared_memories (
+    id UUID PRIMARY KEY,
+    memory_id UUID REFERENCES memories(id),
+    shared_id UUID REFERENCES users(id),
+    recipient_id UUID REFERENCES users(id),
+    message TEXT NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     deleted_at BIGINT DEFAULT 0
