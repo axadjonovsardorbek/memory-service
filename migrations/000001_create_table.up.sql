@@ -21,6 +21,12 @@ BEGIN
             'system'
         );
     END IF; 
+    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'notification') THEN
+        CREATE TYPE notification AS ENUM (
+            'on', 
+            'off'
+        );
+    END IF; 
 END $$;
 
 CREATE TABLE IF NOT EXISTS users (
@@ -30,8 +36,9 @@ CREATE TABLE IF NOT EXISTS users (
     password_hash VARCHAR(255) NOT NULL,
     full_name VARCHAR(100),
     date_of_birth DATE,
+    role VARCHAR(64) DEFAULT 'user',
     privacy_level privacy_type DEFAULT 'friends_only',
-    notifications_enabled BOOLEAN DEFAULT false,
+    notifications_enabled notification DEFAULT 'off',
     language VARCHAR(8) DEFAULT 'en',
     theme theme_type DEFAULT 'system',
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
