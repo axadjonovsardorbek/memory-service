@@ -36,12 +36,12 @@ const (
 type UserServiceClient interface {
 	Register(ctx context.Context, in *UsersRegister, opts ...grpc.CallOption) (*Void, error)
 	Login(ctx context.Context, in *UsersLogin, opts ...grpc.CallOption) (*Tokens, error)
-	Profile(ctx context.Context, in *Void, opts ...grpc.CallOption) (*UsersProfile, error)
+	Profile(ctx context.Context, in *UsersProfileReq, opts ...grpc.CallOption) (*UsersProfile, error)
 	UpdateProfile(ctx context.Context, in *UsersUpdateProfile, opts ...grpc.CallOption) (*Void, error)
 	ForgotPassword(ctx context.Context, in *UsersForgotPassword, opts ...grpc.CallOption) (*Void, error)
 	ResetPassword(ctx context.Context, in *UsersResetPassword, opts ...grpc.CallOption) (*Void, error)
 	ChangePassword(ctx context.Context, in *UsersChangePassword, opts ...grpc.CallOption) (*Void, error)
-	Settings(ctx context.Context, in *Void, opts ...grpc.CallOption) (*UsersSettings, error)
+	Settings(ctx context.Context, in *UsersProfileReq, opts ...grpc.CallOption) (*UsersSettings, error)
 	SettingsUpdate(ctx context.Context, in *UsersUpdateSettings, opts ...grpc.CallOption) (*Void, error)
 }
 
@@ -71,7 +71,7 @@ func (c *userServiceClient) Login(ctx context.Context, in *UsersLogin, opts ...g
 	return out, nil
 }
 
-func (c *userServiceClient) Profile(ctx context.Context, in *Void, opts ...grpc.CallOption) (*UsersProfile, error) {
+func (c *userServiceClient) Profile(ctx context.Context, in *UsersProfileReq, opts ...grpc.CallOption) (*UsersProfile, error) {
 	out := new(UsersProfile)
 	err := c.cc.Invoke(ctx, UserService_Profile_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -116,7 +116,7 @@ func (c *userServiceClient) ChangePassword(ctx context.Context, in *UsersChangeP
 	return out, nil
 }
 
-func (c *userServiceClient) Settings(ctx context.Context, in *Void, opts ...grpc.CallOption) (*UsersSettings, error) {
+func (c *userServiceClient) Settings(ctx context.Context, in *UsersProfileReq, opts ...grpc.CallOption) (*UsersSettings, error) {
 	out := new(UsersSettings)
 	err := c.cc.Invoke(ctx, UserService_Settings_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -140,12 +140,12 @@ func (c *userServiceClient) SettingsUpdate(ctx context.Context, in *UsersUpdateS
 type UserServiceServer interface {
 	Register(context.Context, *UsersRegister) (*Void, error)
 	Login(context.Context, *UsersLogin) (*Tokens, error)
-	Profile(context.Context, *Void) (*UsersProfile, error)
+	Profile(context.Context, *UsersProfileReq) (*UsersProfile, error)
 	UpdateProfile(context.Context, *UsersUpdateProfile) (*Void, error)
 	ForgotPassword(context.Context, *UsersForgotPassword) (*Void, error)
 	ResetPassword(context.Context, *UsersResetPassword) (*Void, error)
 	ChangePassword(context.Context, *UsersChangePassword) (*Void, error)
-	Settings(context.Context, *Void) (*UsersSettings, error)
+	Settings(context.Context, *UsersProfileReq) (*UsersSettings, error)
 	SettingsUpdate(context.Context, *UsersUpdateSettings) (*Void, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
@@ -160,7 +160,7 @@ func (UnimplementedUserServiceServer) Register(context.Context, *UsersRegister) 
 func (UnimplementedUserServiceServer) Login(context.Context, *UsersLogin) (*Tokens, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
 }
-func (UnimplementedUserServiceServer) Profile(context.Context, *Void) (*UsersProfile, error) {
+func (UnimplementedUserServiceServer) Profile(context.Context, *UsersProfileReq) (*UsersProfile, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Profile not implemented")
 }
 func (UnimplementedUserServiceServer) UpdateProfile(context.Context, *UsersUpdateProfile) (*Void, error) {
@@ -175,7 +175,7 @@ func (UnimplementedUserServiceServer) ResetPassword(context.Context, *UsersReset
 func (UnimplementedUserServiceServer) ChangePassword(context.Context, *UsersChangePassword) (*Void, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ChangePassword not implemented")
 }
-func (UnimplementedUserServiceServer) Settings(context.Context, *Void) (*UsersSettings, error) {
+func (UnimplementedUserServiceServer) Settings(context.Context, *UsersProfileReq) (*UsersSettings, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Settings not implemented")
 }
 func (UnimplementedUserServiceServer) SettingsUpdate(context.Context, *UsersUpdateSettings) (*Void, error) {
@@ -231,7 +231,7 @@ func _UserService_Login_Handler(srv interface{}, ctx context.Context, dec func(i
 }
 
 func _UserService_Profile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Void)
+	in := new(UsersProfileReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -243,7 +243,7 @@ func _UserService_Profile_Handler(srv interface{}, ctx context.Context, dec func
 		FullMethod: UserService_Profile_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServiceServer).Profile(ctx, req.(*Void))
+		return srv.(UserServiceServer).Profile(ctx, req.(*UsersProfileReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -321,7 +321,7 @@ func _UserService_ChangePassword_Handler(srv interface{}, ctx context.Context, d
 }
 
 func _UserService_Settings_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Void)
+	in := new(UsersProfileReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -333,7 +333,7 @@ func _UserService_Settings_Handler(srv interface{}, ctx context.Context, dec fun
 		FullMethod: UserService_Settings_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServiceServer).Settings(ctx, req.(*Void))
+		return srv.(UserServiceServer).Settings(ctx, req.(*UsersProfileReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
