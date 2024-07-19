@@ -55,7 +55,6 @@ func (m *MediasRepo) GetById(id *mp.ById) (*mp.MediasGetByIdRes, error) {
 		id,
 		type,
 		url,
-		date,
 		memory_id
 	FROM 
 		medias
@@ -71,7 +70,6 @@ func (m *MediasRepo) GetById(id *mp.ById) (*mp.MediasGetByIdRes, error) {
 		&media.Media.Id,
 		&media.Media.Type,
 		&media.Media.Url,
-		&media.Media.Date,
 		&media.Media.MemoryId,
 	)
 
@@ -93,7 +91,6 @@ func (m *MediasRepo) GetAll(req *mp.MediasGetAllReq) (*mp.MediasGetAllRes, error
 		id,
 		type,
 		url,
-		date,
 		memory_id
 	FROM 
 		medias
@@ -137,7 +134,6 @@ func (m *MediasRepo) GetAll(req *mp.MediasGetAllReq) (*mp.MediasGetAllRes, error
 			&media.Id,
 			&media.Type,
 			&media.Url,
-			&media.Date,
 			&media.MemoryId,
 		)
 

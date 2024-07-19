@@ -30,7 +30,7 @@ func (m *SharedMemoriesRepo) Create(req *mp.SharedMemoriesCreateReq) (*mp.Void, 
 		memory_id,
 		shared_id,
 		recipient_id,
-		message,
+		message
 	) VALUES ($1, $2, $3, $4, $5)
 	`
 
@@ -50,12 +50,7 @@ func (m *SharedMemoriesRepo) GetById(id *mp.ById) (*mp.SharedMemoriesGetByIdRes,
 	memory := mp.SharedMemoriesGetByIdRes{
 		Memory: &mp.SharedMemoriesRes{},
 	}
-	// Id          string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	// Message     string `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
-	// SharedAt    string `protobuf:"bytes,3,opt,name=shared_at,json=sharedAt,proto3" json:"shared_at,omitempty"`
-	// MemoryId    string `protobuf:"bytes,4,opt,name=memory_id,json=memoryId,proto3" json:"memory_id,omitempty"`
-	// SharedId    string `protobuf:"bytes,5,opt,name=shared_id,json=sharedId,proto3" json:"shared_id,omitempty"`
-	// RecipientId
+
 	query := `
 	SELECT 
 		id,

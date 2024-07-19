@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/google/uuid"
+	"github.com/lib/pq"
 )
 
 type MemoriesRepo struct {
@@ -37,8 +38,8 @@ func (m *MemoriesRepo) Create(req *mp.MemoriesCreateReq) (*mp.Void, error) {
 		privacy
 	) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
 	`
-
-	_, err := m.db.Exec(query, id, req.UserId, req.Title, req.Description, req.Date, req.Tags, req.Location, req.PlaceName, req.Privacy)
+	
+	_, err := m.db.Exec(query, id, req.UserId, req.Title, req.Description, req.Date, pq.Array(req.Tags), req.Location, req.PlaceName, req.Privacy)
 
 	if err != nil {
 		log.Println("Error while creating memory: ", err)
