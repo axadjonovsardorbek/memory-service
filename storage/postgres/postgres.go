@@ -11,11 +11,11 @@ import (
 )
 
 type Storage struct {
-	Db        *sql.DB
-	MemoryS    storage.MemoriesI
-	MediaS storage.MediasI
-	SharedMemoryS    storage.SharedMemoriesI
-	CommentS storage.CommentsI
+	Db            *sql.DB
+	MemoryS       storage.MemoriesI
+	MediaS        storage.MediasI
+	SharedMemoryS storage.SharedMemoriesI
+	CommentS      storage.CommentsI
 }
 
 func NewPostgresStorage(config config.Config) (*Storage, error) {
@@ -37,10 +37,10 @@ func NewPostgresStorage(config config.Config) (*Storage, error) {
 	shared := NewSharedMemoriesRepo(db)
 
 	return &Storage{
-		Db:        db,
-		MemoryS:    memory,
-		MediaS: media,
-		SharedMemoryS:    shared,
-		CommentS: comment,
+		Db:            db,
+		MemoryS:       memory,
+		MediaS:        media,
+		SharedMemoryS: shared,
+		CommentS:      comment,
 	}, nil
 }
